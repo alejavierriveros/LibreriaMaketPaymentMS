@@ -1,5 +1,6 @@
 package com.example.LibreriaMaketPaymentMS.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Data
@@ -8,5 +9,7 @@ import lombok.*;
 public class PagoDTO {
 
     private Long pedidoId;
+
+    @NotBlank(message = "Metodo de pago Obligatorio")
     private String metodoPago;
 }

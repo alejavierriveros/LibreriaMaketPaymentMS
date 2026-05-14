@@ -3,9 +3,6 @@ package com.example.LibreriaMaketPaymentMS.dto;
 import lombok.*;
 import java.util.List;
 
-import lombok.*;
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

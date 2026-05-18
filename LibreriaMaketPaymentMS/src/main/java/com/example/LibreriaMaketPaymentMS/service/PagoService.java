@@ -1,7 +1,7 @@
 package com.example.LibreriaMaketPaymentMS.service;
 
 import com.example.LibreriaMaketPaymentMS.clients.ToAPIPedidoFeign;
-import com.example.LibreriaMaketPaymentMS.dto.PagoDTO;
+import com.example.LibreriaMaketPaymentMS.dto.PagoInputDTO;
 import com.example.LibreriaMaketPaymentMS.dto.PedidoResponseDTO;
 import com.example.LibreriaMaketPaymentMS.exceptions.BadRequestException;
 import com.example.LibreriaMaketPaymentMS.exceptions.ResourceNotFoundException;
@@ -24,7 +24,7 @@ public class PagoService {
     private ToAPIPedidoFeign pedidoFeign;
 
 
-    public Pago crear(PagoDTO dto) {
+    public Pago crear(PagoInputDTO dto) {
 
         // Validar método de pago
         if (dto.getMetodoPago() == null || dto.getMetodoPago().isBlank()) {
@@ -48,7 +48,7 @@ public class PagoService {
 
         pago.setPedidoId(dto.getPedidoId());
         pago.setClienteId(pedido.getClienteId());
-        pago.setMonto(pedido.getTotal());
+        pago.setTotalFinal(pedido.getTotal());
         pago.setMetodoPago(dto.getMetodoPago());
         pago.setFechaPago(LocalDateTime.now());
         pago.setEstadoPago("APROBADO");

@@ -1,15 +1,16 @@
 package com.example.LibreriaMaketPaymentMS.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PagoDTO {
+public class PagoInputDTO {
 
     private Long pedidoId;
 
-    @NotBlank(message = "Metodo de pago Obligatorio")
-    private String metodoPago;
+    @NotNull(message = "Metodo de pago Obligatorio")
+    private Long metodoPagoId;
 }

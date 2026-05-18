@@ -17,7 +17,7 @@ public class PagoController {
     private PagoService service;
 
     @PostMapping
-    public Pago crear(@RequestBody PagoDTO dto){
+    public Pago crear(@RequestBody PagoInputDTO dto){
         return service.crear(dto);
     }
 

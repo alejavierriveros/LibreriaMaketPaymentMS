@@ -1,9 +1,9 @@
 package com.example.LibreriaMaketPaymentMS.repository;
 
-import com.example.LibreriaMaketPaymentMS.model.*;
+import com.example.LibreriaMaketPaymentMS.model.MetodoPago;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PagoRepository extends JpaRepository<Pago, Long> {
+public interface MetodoPagoRepository extends JpaRepository<MetodoPago, Long> {
 }

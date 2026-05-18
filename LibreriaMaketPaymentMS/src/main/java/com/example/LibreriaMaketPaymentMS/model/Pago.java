@@ -3,6 +3,7 @@ package com.example.LibreriaMaketPaymentMS.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -20,11 +21,19 @@ public class Pago {
 
     private Long clienteId;
 
-    private double monto;
+    private Double totalFinal;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name =  "metodos_pago_id", nullable = false)
+    private MetodoPago metodoPago;
 
     private LocalDateTime fechaPago;
 
-    private String metodoPago;
+    private Boolean revertido;
 
-    private String estadoPago;
+    @PrePersist
+    protected void fechaOnCreate(){
+        this.fechaPago = LocalDateTime.now();
+    }
 }

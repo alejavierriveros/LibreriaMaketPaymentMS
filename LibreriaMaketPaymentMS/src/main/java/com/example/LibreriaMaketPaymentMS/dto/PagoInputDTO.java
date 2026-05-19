@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 public class PagoInputDTO {
 
-    private Long pedidoId;
+    private Long ventaId;
 
     @NotNull(message = "Metodo de pago Obligatorio")
     private Long metodoPagoId;

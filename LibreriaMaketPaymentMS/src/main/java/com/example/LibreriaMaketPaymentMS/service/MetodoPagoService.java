@@ -41,24 +41,22 @@ public class MetodoPagoService {
     public MetodoPagoResponseDTO save(MetodoPagoInputDTO dto) {
         //Validaciones:
         //Duplicado de nombres de método de pago.
-        if(metodoPagoRepository.findByNombre(dto.getNombre()).getNombre() == dto.getNombre()){
+        if (metodoPagoRepository.existsByNombre(dto.getNombre())){
             throw new NombreExisteException("Nombre de método de pago ya existe.");
         }
 
         //Verificación de requerimiento de url para consumir servicio de pago.
-        String url = null;
-        if (dto.getRequiereApiExterna()) {
-            if (dto.getServicioURL() != null || !dto.getServicioURL().isEmpty()) {
-                url = dto.getNombre();
-            } else {
-                throw new IllegalArgumentException("Debe ingresar una URL para consumir servicio de pago.");
-            }
-        } else {
-            //Si requerimiento es false, se rellena atributo de url con "NONE". Pensado para método de pago en efectivo.
-            url = "NONE";
+        if (dto.getRequiereApiExterna() && (dto.getServicioURL() == null || dto.getServicioURL().isEmpty())) {
+
+            throw new IllegalArgumentException("Debe ingresar una URL para consumir servicio de pago.");
+
         }
 
-        return metodoPagoResponseMapper.toDto(metodoPagoRepository.save(metodoPagoInputMapper.toEntity(url, dto)));
+        if (!dto.getRequiereApiExterna()) {
+            dto.setServicioURL("NONE");
+        }
+
+        return metodoPagoResponseMapper.toDto(metodoPagoRepository.save(metodoPagoInputMapper.toEntity(dto)));
     }
 
     //READ:
@@ -84,7 +82,7 @@ public class MetodoPagoService {
 
     //UPDATE:
     @Transactional
-    public MetodoPagoResponseDTO update(MetodoPagoUpdateDTO dto){
+    public MetodoPagoResponseDTO update(MetodoPagoUpdateDTO dto) {
 
         //TODO: Se debe arregllar: expone a la entidad MetodoPago directamente en Service cuando se podría procesar en el mapper.
         MetodoPago ent = metodoPagoRepository.findById(dto.getId()).orElseThrow(() -> new IdNoExisteException("ID de metodoPago no existe."));

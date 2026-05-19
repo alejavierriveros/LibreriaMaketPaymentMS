@@ -13,6 +13,9 @@ public class GlobalExceptionHandler {
     String title1 = "Error validación de datos."; //para HTTP 400
     String title2 = "Conflicto de datos."; //para HTTP 409
     String title3 = "Objeto no encontrado"; //para HTTP 404
+    String title4 = "Servicio sin respuesta (Bad Gateway)."; //para HTTP 502
+    String title5 = "Error en requisitos de datos."; //para HTTP 422
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handlerValidation(MethodArgumentNotValidException exception){
@@ -45,6 +48,14 @@ public class GlobalExceptionHandler {
     public ProblemDetail handlerNombreExiste(NombreExisteException exception){
         ProblemDetail problemDetail = ProblemDetail.forStatus(409); //HTTP 409 = conlficto de datos
         problemDetail.setTitle(title2);
+        problemDetail.setDetail(exception.getMessage());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(FailedAPICallResponseExeption.class)
+    public ProblemDetail handlerFailedAPICallResponse(FailedAPICallResponseExeption exception){
+        ProblemDetail problemDetail = ProblemDetail.forStatus(502); //HTTP 502 = Bad Gateway
+        problemDetail.setTitle(title4);
         problemDetail.setDetail(exception.getMessage());
         return problemDetail;
     }

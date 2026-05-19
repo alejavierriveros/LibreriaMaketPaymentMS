@@ -17,12 +17,11 @@ public class Pago {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long pedidoId;
+    private Long ventaId;
 
     private Long clienteId;
 
     private Double totalFinal;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name =  "metodos_pago_id", nullable = false)

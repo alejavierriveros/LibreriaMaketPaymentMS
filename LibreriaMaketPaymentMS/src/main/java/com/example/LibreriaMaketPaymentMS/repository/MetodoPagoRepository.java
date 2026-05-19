@@ -11,4 +11,6 @@ public interface MetodoPagoRepository extends JpaRepository<MetodoPago, Long> {
     List<MetodoPago> nombre(String nombre);
 
     MetodoPago findByNombre(String nombre);
+
+    boolean existsByNombre(String nombre);
 }

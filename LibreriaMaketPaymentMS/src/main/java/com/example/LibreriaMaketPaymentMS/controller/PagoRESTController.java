@@ -1,9 +1,8 @@
 package com.example.LibreriaMaketPaymentMS.controller;
 
-import com.example.LibreriaMaketPaymentMS.dto.MetodoPagoInputDTO;
-import com.example.LibreriaMaketPaymentMS.dto.MetodoPagoResponseDTO;
-import com.example.LibreriaMaketPaymentMS.dto.MetodoPagoUpdateDTO;
-import com.example.LibreriaMaketPaymentMS.service.MetodoPagoService;
+import com.example.LibreriaMaketPaymentMS.dto.*;
+import com.example.LibreriaMaketPaymentMS.service.*;
+
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,24 +15,24 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/metodos-de-pago")
-public class MetodoPagoRESTController {
+@RequestMapping("/api/v1/pagos")
+public class PagoRESTController {
 
-    private static final Logger logger = LoggerFactory.getLogger(MetodoPagoRESTController.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(PagoRESTController.class.getName());
 
     @Autowired
-    private MetodoPagoService metodoPagoService;
+    private PagoService pagoService;
 
     //CREATE:
     @PostMapping
-    public ResponseEntity<MetodoPagoResponseDTO> save(@Valid @RequestBody MetodoPagoInputDTO dto) {
+    public ResponseEntity<PagoResponseDTO> save(@Valid @RequestBody PagoInputDTO dto) {
         String logMsgRequest = "Recibiendo solicitud para crear/guardar método de pago.";
         String logMsg = "Solicitud para crear/guardar método de pago.";
         logger.info(logMsgRequest);
-        MetodoPagoResponseDTO created = metodoPagoService.save(dto);
+        PagoResponseDTO created = pagoService.save(dto);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(created.getId()).toUri();
         //de componentes de constructor URI // de la actual request //ruta de id // sacar la id del obj creado // transformar a URI.
-        logger.info(logMsg + "=> creado con ID: {}, Nombre: {}.", created.getId(), created.getNombre());
+        logger.info(logMsg + "=> creado con ID: {}, con Cliente ID: {}, con ID de Venta: {}.", created.getId(), created.getClienteId(), created.getClienteId());
         return ResponseEntity.created(location).body(created);
         //devuelve el estado y la locación //devuelve el objeto creado
     }
@@ -41,11 +40,11 @@ public class MetodoPagoRESTController {
 
     //READ:
     @GetMapping
-    public ResponseEntity<List<MetodoPagoResponseDTO>> findAll() {
-        String logMsgRequest = "Recibiendo solicitud para buscar listado de métodos de pago.";
-        String logMsg = "Solicitud para buscar listado de métodos de pago.";
+    public ResponseEntity<List<PagoResponseDTO>> findAll() {
+        String logMsgRequest = "Recibiendo solicitud para buscar listado de pagos.";
+        String logMsg = "Solicitud para buscar listado de pagos.";
         logger.info(logMsgRequest);
-        List<MetodoPagoResponseDTO> listadoDTO = metodoPagoService.findAll();
+        List<PagoResponseDTO> listadoDTO = pagoService.findAll();
 
         if (!listadoDTO.isEmpty()) {
             logger.info(logMsg + "=> encontrado(s) y enlistado(s).");
@@ -57,10 +56,10 @@ public class MetodoPagoRESTController {
 
     @GetMapping("/exists-by-id/{id}")
     public ResponseEntity<Boolean> existsById(@PathVariable Long id) {
-        String logMsgRequest = "Recibiendo solicitud para verificar existencia de método de pago con ID: " + id + ".";
-        String logMsg = "Solicitud para verificar existencia de método de pago con ID: " + id + ".";
+        String logMsgRequest = "Recibiendo solicitud para verificar existencia de pago con ID: " + id + ".";
+        String logMsg = "Solicitud para verificar existencia de pago con ID: " + id + ".";
         logger.info(logMsgRequest);
-        if (metodoPagoService.existsById(id)) {
+        if (pagoService.existsById(id)) {
             logger.info(logMsg + " => encontrado.");
             return ResponseEntity.ok(true);
         }
@@ -69,11 +68,11 @@ public class MetodoPagoRESTController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MetodoPagoResponseDTO> findById(@PathVariable Long id) {
-        String logMsgRequest = "Recibiendo solicitud para buscar método de pago por ID: " + id + ".";
-        String logMsg = "Solicitud para buscar método de pago por ID: " + id + ".";
+    public ResponseEntity<PagoResponseDTO> findById(@PathVariable Long id) {
+        String logMsgRequest = "Recibiendo solicitud para buscar pago con ID: " + id + ".";
+        String logMsg = "Solicitud para buscar pago con ID: " + id + ".";
         logger.info(logMsgRequest);
-        MetodoPagoResponseDTO dto = metodoPagoService.findById(id);
+        PagoResponseDTO dto = pagoService.findById(id);
         if (dto != null) {
             logger.info(logMsg + "=> encontrado.");
             return ResponseEntity.ok(dto);
@@ -82,29 +81,17 @@ public class MetodoPagoRESTController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/by-nombre/{nombre}")
-    public ResponseEntity<MetodoPagoResponseDTO> findByNombre(@PathVariable String nombre) {
-        String logMsgRequest = "Recibiendo solicitud para buscar método de pago por nombre: " + nombre + ".";
-        String logMsg = "Solicitud para buscar método de pago por nombre: " + nombre + ".";
-        logger.info(logMsgRequest);
-        MetodoPagoResponseDTO dto = metodoPagoService.findByNombre(nombre);
-        if (dto != null) {
-            logger.info(logMsg + "=> encontrado con ID:{}", dto.getId() + ".");
-            return ResponseEntity.ok(dto);
-        }
-        logger.info(logMsg + "=> no encontrado.");
-        return ResponseEntity.notFound().build();
-    }
+
 
 
     //UPDATE:
     @PutMapping("/{id}")
-    public ResponseEntity<MetodoPagoResponseDTO> update(@Valid @RequestBody MetodoPagoUpdateDTO dto, @PathVariable Long id){
-        String logMsgRequest = "Recibiendo solicitud para actualizar metodoPago con ID: " + id + ".";
-        String logMsg = "Solicitud para actualizar metodoPago con ID: " + id + ".";
+    public ResponseEntity<PagoResponseDTO> update(@Valid @RequestBody PagoUpdateDTO dto, @PathVariable Long id){
+        String logMsgRequest = "Recibiendo solicitud para actualizar pago con ID: " + id + ".";
+        String logMsg = "Solicitud para actualizar pago con ID: " + id + ".";
         logger.info(logMsgRequest);
         dto.setId(id);
-        MetodoPagoResponseDTO updated = metodoPagoService.update(dto);
+        PagoResponseDTO updated = pagoService.update(dto);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(updated.getId()).toUri();
         //de componentes de constructor URI // de la actual request //ruta de id // sacar la id del obj creado // transformar a URI.
         logger.info(logMsg + " => actualizado.");
@@ -116,15 +103,14 @@ public class MetodoPagoRESTController {
     //DELETE:
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id){
-        String logMsgRequest = "Recibiendo solicitud para borrar metodoPago con ID: " + id + ".";
-        String logMsg = "Solicitud para borrar metodoPago con ID: " + id + ".";
+        String logMsgRequest = "Recibiendo solicitud para borrar pago con ID: " + id + ".";
+        String logMsg = "Solicitud para borrar pago con ID: " + id + ".";
         logger.info(logMsgRequest);
-        if(metodoPagoService.deleteMetodoPagoById(id)){
+        if(pagoService.deletePagoById(id)){
             logger.info(logMsg + " => encontrado y borrado.");
             return ResponseEntity.noContent().build();
         }
         logger.info(logMsg + " => no encontrado.");
         return ResponseEntity.notFound().build();
     }
-    
 }

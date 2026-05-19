@@ -14,7 +14,7 @@ public class PagoResponseMapper {
 
         return new PagoResponseDTO(
                 ent.getId(),
-                ent.getPedidoId(),
+                ent.getVentaId(),
                 ent.getClienteId(),
                 ent.getTotalFinal(),
                 ent.getMetodoPago().getNombre(),

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class PagoResponseDTO {
 
     private Long id;
-    private Long pedidoId;
+    private Long ventaId;
     private Long clienteId;
     private Double totalFinal;
     private String metodoPago;

@@ -23,7 +23,10 @@ public class MetodoPago {
     @Length(message = "Debe ser un nombre con largo mínimo de 2 y máximo 10 caracters.", min = 2, max = 10)
     private String nombre;
     @NotNull
+    @Column(name = "requiere_api_externa")
     private Boolean requiereApiExterna;
+
+    @Column(name = "servicio_url")
     private String servicioURL;
     private Boolean disponible;
 }

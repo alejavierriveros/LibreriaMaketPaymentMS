@@ -7,11 +7,10 @@ import org.springframework.stereotype.Component;
 import com.example.LibreriaMaketPaymentMS.controller.MetodoPagoRESTControllerV2;
 import com.example.LibreriaMaketPaymentMS.dto.MetodoPagoResponseDTO;
 
-
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-
+@Component 
 public class MetodoPagoMedelAssemblers implements RepresentationModelAssembler<MetodoPagoResponseDTO, EntityModel<MetodoPagoResponseDTO>> {
 
     @Override
